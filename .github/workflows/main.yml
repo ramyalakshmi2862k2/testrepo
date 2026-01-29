@@ -1,0 +1,40 @@
+name: Python CI/CD
+ 
+ 
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+ 
+jobs:
+  ci:
+    runs-on: Agent-dev
+ 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+ 
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+ 
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name : create directory
+      run : | 
+         mkdir -p src
+         cp guess.py src/
+ 
+    - name: Run tests
+      run: |
+         python src/my.py
+ 
+    - name: Build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name : python-build
+        path : src/
+     
